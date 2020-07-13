@@ -368,7 +368,7 @@
                     hour:'',
                     day:'',
                     month:'',
-                    Week:'',
+                    week:'',
                     year:'',
                 }
             }
@@ -592,7 +592,7 @@
             },
             rest(data){
                 for(let i in data){
-                    if(!data[i] instanceof RegExp) {
+                    if(!(data[i] instanceof RegExp)) {
                         if(data[i] instanceof Object){
                             this.rest(data[i])
                         }else{
@@ -696,8 +696,8 @@
                     if(/^[1-7]#[1-5]$/.test(value)) {
                         const arr = value.trim().split('#');
                         this.day.cronEvery = '11';
-                        tag.cronNthDayNth = arr[0];
-                        tag.cronNthDayDay = arr[1];
+                        tag.cronNthDayNth = arr[1];
+                        tag.cronNthDayDay = arr[0];
                         return;
                     }
                 }
