@@ -291,7 +291,7 @@
                     rangeEnd:'',
                     specificSpecific:[],
                     intervalRule: /^([0-9]|[1-5]\d)\/([1-9]|[1-5]\d|60)$/,
-                    arrayRule: /^(([0-9]|[1-5]\d),)?([0-9]|[1-5]\d)$/,
+                    arrayRule: /^(([0-9]|[1-5]\d),)*([0-9]|[1-5]\d)$/,
                     cycleRule: /^([1-9]|[1-5]\d|60)-([0-9]|[1-5]\d)$/
                 },
                 minute:{
@@ -302,7 +302,7 @@
                     rangeEnd:'',
                     specificSpecific:[],
                     intervalRule: /^([0-9]|[1-5]\d)\/([1-9]|[1-5]\d|60)$/,
-                    arrayRule: /^(([0-9]|[1-5]\d),)?([0-9]|[1-5]\d)$/,
+                    arrayRule: /^(([0-9]|[1-5]\d),)*([0-9]|[1-5]\d)$/,
                     cycleRule: /^([1-9]|[1-5]\d|60)-([0-9]|[1-5]\d)$/
                 },
                 hour:{
@@ -313,7 +313,7 @@
                     rangeEnd:'',
                     specificSpecific:[],
                     intervalRule: /^([0-9]|1\d|2[0-3])\/([0-9]|1\d|2[0-3])$/,
-                    arrayRule: /^(([0-9]|1\d|2[0-3]),)?([0-9]|1\d|2[0-3])$/,
+                    arrayRule: /^(([0-9]|1\d|2[0-3]),)*([0-9]|1\d|2[0-3])$/,
                     cycleRule: /^([0-9]|1\d|2[0-3])-([0-9]|1\d|2[0-3])$/
                 },
                 day:{
@@ -327,7 +327,7 @@
                     cronDaysBeforeEomMinus:'',
                     cronDaysNearestWeekday:'',
                     intervalRule: /^([1-9]|[1-2]\d|3[0-1])\/([1-9]|[1-2]\d|3[0-1])$/,
-                    arrayRule: /^(([1-9]|[1-2]\d|3[0-1]),)?([1-9]|[1-2]\d|3[0-1])$/,
+                    arrayRule: /^(([1-9]|[1-2]\d|3[0-1]),)*([1-9]|[1-2]\d|3[0-1])$/,
                     cycleRule: /^([1-9]|[1-2]\d|3[0-1])-([1-9]|[1-2]\d|3[0-1])$/
                 },
                 week:{
@@ -337,7 +337,7 @@
                     specificSpecific:[],
                     cronNthDayDay:1,
                     cronNthDayNth:'1',
-                    arrayRule: /^(([A-Z]{3}),)?([A-Z]{3})$/,
+                    arrayRule: /^((SUN|MON|TUE|WED|THU|FRI|SAT),)*(SUN|MON|TUE|WED|THU|FRI|SAT)$/,
                     intervalRule: /^[1-7]\/[1-7]$/
                 },
                 month:{
@@ -348,7 +348,7 @@
                     rangeEnd:'',
                     specificSpecific:[],
                     intervalRule: /^(\d|1[0-2])\/(\d|1[0-2])$/,
-                    arrayRule: /^(([1-9]|1[0-2]),)?([1-9]|1[0-2])$/,
+                    arrayRule: /^(([1-9]|1[0-2]),)*([1-9]|1[0-2])$/,
                     cycleRule: /^([1-9]|1[0-2])-([1-9]|1[0-2])$/
                 },
                 year:{
@@ -359,7 +359,7 @@
                     rangeEnd:'',
                     specificSpecific:[],
                     intervalRule: /^(20[2-9]\d|21[0-1]\d|2120)\/([1-9]|[1-9]\d)$/,
-                    arrayRule: /^((20[2-9]\d|21[0-1]\d|2120),)?(20[2-9]\d|21[0-1]\d|2120)$/,
+                    arrayRule: /^((20[2-9]\d|21[0-1]\d|2120),)*(20[2-9]\d|21[0-1]\d|2120)$/,
                     cycleRule: /^(20[2-9]\d|21[0-1]\d|2120)-(20[2-9]\d|21[0-1]\d|2120)$/
                 },
                 output:{
@@ -385,7 +385,6 @@
                     console.log(curVal);
                     console.log(oldVal);
                     for(const key in curVal) {
-                        console.log(key);
                         this.verifyAndConvert(key);
                     }
                 },
@@ -693,6 +692,11 @@
                     }
                 }
                 if(key === 'week') {
+                    if(value === '*') {
+                        this.day.cronEvery = '4';
+                        tag.specificSpecific = [];
+                        return;
+                    }
                     if(/^[1-7]#[1-5]$/.test(value)) {
                         const arr = value.trim().split('#');
                         this.day.cronEvery = '11';
