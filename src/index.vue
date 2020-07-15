@@ -630,6 +630,10 @@
                 if(value === '?') return;
                 if(value === '*') {
                     tag.cronEvery = '1';
+                    if(key === 'week') {
+                        this.day.cronEvery = '4';
+                        tag.specificSpecific = [];
+                    }
                     return;
                 }
                 if(value === 'L')  {
@@ -691,24 +695,20 @@
                         return;
                     }
                 }
-                if(key === 'week') {
-                    if(value === '*') {
-                        this.day.cronEvery = '4';
-                        tag.specificSpecific = [];
-                        return;
-                    }
-                    if(/^[1-7]#[1-5]$/.test(value)) {
-                        const arr = value.trim().split('#');
-                        this.day.cronEvery = '11';
-                        tag.cronNthDayNth = arr[1];
-                        tag.cronNthDayDay = arr[0];
-                        return;
-                    }
+                if(key === 'week' && /^[1-7]#[1-5]$/.test(value)) {
+                    const arr = value.trim().split('#');
+                    this.day.cronEvery = '11';
+                    tag.cronNthDayNth = arr[1];
+                    tag.cronNthDayDay = arr[0];
+                    return;
                 }
                 this.showError();
             }
         },
         mounted(){
             console.log(this['day']);
+        },
+        created() {
+            this.changeTime(this.cronValue);
         }
     }</script>
